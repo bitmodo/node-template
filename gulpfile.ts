@@ -7,6 +7,8 @@ import minimist from 'minimist';
 import { createProject } from 'gulp-typescript';
 import mocha             from 'gulp-mocha';
 
+const eslint = require('gulp-eslint');
+
 // Constants
 
 const args = minimist(process.argv.slice(2), {
@@ -43,21 +45,31 @@ function ts() {
                     .pipe(dest('dist'));
 }
 
+function lintTs() {
+    return src('lib/**/*.ts')
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+}
+
 function testTs() {
-    return src('test/**/*')
+    return src('test/**/*.ts')
         .pipe(mocha());
 }
 
 // Watch functions
 
 function watchTs() {
-    return watch('lib/**/*', ts);
+    return watch('lib/**/*.ts', ts);
 }
 
 // Task exports
 
 exports.ts    = ts;
 exports.build = parallel(exports.ts);
+
+exports.lintTs = lintTs;
+exports.lint = parallel(exports.lintTs);
 
 exports.testTs = testTs;
 exports.test   = parallel(exports.testTs);
