@@ -49,7 +49,7 @@
     "bundledDependencies": [],
     "optionalDependencies": {},
     "engines": {
-        "node": "^10.19.0"
+        "node": ">=10.19.0"
     },
     "keywords": [],
     "repository": {
